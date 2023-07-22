@@ -22,12 +22,13 @@ namespace IssueTracker.Service.Image
             await _inAppStorageService.DeleteFile(imageGuid.ToString(), containerName);
             await _imageRepository.Delete(imageGuid);
         }
+
         public async Task Save(int issueId, IImage image)
         {
             var issue = await _issueRepository.GetIssueById(issueId);
             if (issue is null)
             {
-                throw new Exception("Issue not found for the passed in IssueId");
+                throw new NullReferenceException($"Issue was not found for the passed in IssueId {issueId}");
             }
 
             var imageBytes = Convert.FromBase64String(image.Bas64Image);
