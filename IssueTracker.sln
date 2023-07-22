@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueTracker.API", "IssueTracker.API\IssueTracker.API.csproj", "{C47C1267-9C88-408A-85DD-67359785A08F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IssueTracker.API", "IssueTracker.API\IssueTracker.API.csproj", "{C47C1267-9C88-408A-85DD-67359785A08F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueTracker.Domain", "IssueTracker.Domain\IssueTracker.Domain.csproj", "{59E77E3E-D97A-4B86-8303-515AF037D75C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IssueTracker.Domain", "IssueTracker.Domain\IssueTracker.Domain.csproj", "{59E77E3E-D97A-4B86-8303-515AF037D75C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueTracker.Infrastructure.Database", "IssueTracker.Infrastructure.Database\IssueTracker.Infrastructure.Database.csproj", "{19F264D1-2B29-46CE-8712-08DB596F28D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IssueTracker.Infrastructure.Database", "IssueTracker.Infrastructure.Database\IssueTracker.Infrastructure.Database.csproj", "{19F264D1-2B29-46CE-8712-08DB596F28D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IssueTracker.Service", "IssueTracker.Service\IssueTracker.Service.csproj", "{D0A4FB97-7F9B-42A1-90D5-5646025546BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IssueTracker.Service", "IssueTracker.Service\IssueTracker.Service.csproj", "{D0A4FB97-7F9B-42A1-90D5-5646025546BA}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DB", "DB\DB.sqlproj", "{68D18A63-5C8C-41FC-85E4-10B495FBE4C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTesting.Services", "UnitTesting.Services\UnitTesting.Services.csproj", "{33391B66-A210-4D75-9E5F-1B3F6CB46D18}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,16 @@ Global
 		{D0A4FB97-7F9B-42A1-90D5-5646025546BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0A4FB97-7F9B-42A1-90D5-5646025546BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0A4FB97-7F9B-42A1-90D5-5646025546BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68D18A63-5C8C-41FC-85E4-10B495FBE4C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68D18A63-5C8C-41FC-85E4-10B495FBE4C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68D18A63-5C8C-41FC-85E4-10B495FBE4C5}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{68D18A63-5C8C-41FC-85E4-10B495FBE4C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68D18A63-5C8C-41FC-85E4-10B495FBE4C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68D18A63-5C8C-41FC-85E4-10B495FBE4C5}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{33391B66-A210-4D75-9E5F-1B3F6CB46D18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33391B66-A210-4D75-9E5F-1B3F6CB46D18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33391B66-A210-4D75-9E5F-1B3F6CB46D18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33391B66-A210-4D75-9E5F-1B3F6CB46D18}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
