@@ -44,5 +44,25 @@ namespace IssueTracker.Service.StorageService
             }
             return Task.FromResult(0);
         }
+
+        public async Task<(string imagePath, string fileName)> Upload(IFormFile formFile)
+        {
+            var extension = Path.GetExtension(formFile.FileName);
+            var fileName = $"{Guid.NewGuid().ToString()}{extension}";
+
+            string folder = Path.Combine(_env.ContentRootPath, "IssueFiles");
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+
+            var pathForDb = Path.Combine(_env.ContentRootPath, "IssueFiles/", fileName);
+
+            using FileStream stream = new FileStream(pathForDb, FileMode.Create);
+            await formFile.CopyToAsync(stream);
+            stream.Close();
+
+            return (pathForDb, fileName);
+        }
     }
 }

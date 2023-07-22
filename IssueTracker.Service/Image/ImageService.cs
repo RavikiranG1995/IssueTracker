@@ -1,6 +1,7 @@
 ﻿using IssueTracker.Domain.Entities.IssueImage;
 using IssueTracker.Domain.Repositories;
 using IssueTracker.Domain.Services;
+using Microsoft.AspNetCore.Http;
 
 namespace IssueTracker.Service.Image
 {
@@ -36,6 +37,29 @@ namespace IssueTracker.Service.Image
             image.ImagePath = imageData.imagePath;
             image.ImageGuid = imageData.imageGuid;
             await _imageRepository.SaveImage(issueId, image);
+        }
+
+        public async Task<List<IImage>> Upload(List<IFormFile> formFiles)
+        {
+            var issueFiles = new List<IImage>();
+            foreach (var formFile in formFiles)
+            {
+                var file = new Domain.Entities.Issues.Image();
+                var fileData = await _inAppStorageService.Upload(formFile);
+                file.ImagePath = fileData.imagePath;
+                //add proper path
+                file.ImageGuid = Guid.NewGuid();
+                //await _imageRepository.SaveImage(issueId,file);
+            }
+            return issueFiles;
+        }
+        public async Task Upload(int issueId, List<IFormFile> formFiles)
+        {
+            var files = await Upload(formFiles);
+            foreach (var file in files)
+            {
+                await _imageRepository.SaveImage(issueId, file);
+            }
         }
     }
 }

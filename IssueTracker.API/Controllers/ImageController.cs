@@ -9,9 +9,11 @@ namespace IssueTracker.API.Controllers
     public class ImageController : ControllerBase
     {
         private readonly IImageService _imageService;
-        public ImageController(IImageService imageService)
+        private readonly IInAppStorageService _inAppStorageService;
+        public ImageController(IImageService imageService, IInAppStorageService inAppStorageService)
         {
             _imageService = imageService;
+            _inAppStorageService = inAppStorageService;
         }
 
         [HttpPost("{issueId:int}")]
@@ -34,6 +36,21 @@ namespace IssueTracker.API.Controllers
         {
             await _imageService.Delete(imageGuid);
             return NoContent();
+        }
+
+        [HttpPost("upload/{issueId}")]
+        public async Task<IActionResult> Upload(int issueId, List<IFormFile> formFile)
+        {
+            try
+            {
+                await _imageService.Upload(issueId, formFile);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest();
+            }
+
         }
     }
 }

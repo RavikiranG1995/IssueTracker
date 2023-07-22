@@ -1,4 +1,5 @@
-﻿using IssueTracker.Domain.Entities.Issues;
+﻿using IssueTracker.Domain.Entities.IssueImage;
+using IssueTracker.Domain.Entities.Issues;
 using IssueTracker.Domain.Repositories;
 using IssueTracker.Domain.Services;
 
@@ -16,7 +17,7 @@ namespace IssueTracker.Service.Issues
             _issueRepository = issueRepository;
             _imageRepository = imageRepository;
         }
-        public async Task<int> Upsert(IIssue issue)
+        public async Task<int> Upsert(IIssue issue,List<IImage> files)
         {
             foreach (var image in issue.Images)
             {
@@ -26,13 +27,14 @@ namespace IssueTracker.Service.Issues
                 image.ImagePath = imageData.imagePath;
                 image.ImageGuid = imageData.imageGuid;
             }
-            return await _issueRepository.Upsert(issue);
+            return await _issueRepository.Upsert(issue, files);
         }
 
         public async Task<IIssue> GetIssueById(int id)
         {
             return await _issueRepository.GetIssueById(id);
         }
+
         public async Task<IEnumerable<IIssue>> GetAllIssues()
         {
             return await _issueRepository.GetAllIssues();

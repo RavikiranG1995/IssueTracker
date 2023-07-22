@@ -10,9 +10,11 @@ namespace IssueTracker.API.Controllers
     public class IssueController : ControllerBase
     {
         private readonly IIssueService _issueService;
-        public IssueController(IIssueService issueService)
+        private readonly IImageService _imageService;
+        public IssueController(IIssueService issueService, IImageService imageService)
         {
             _issueService = issueService;
+            _imageService = imageService;
         }
 
         [HttpGet("{id}")]
@@ -21,6 +23,20 @@ namespace IssueTracker.API.Controllers
             try
             {
                 return Ok(await _issueService.GetIssueById(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("employee/{employeeId}")]
+        public async Task<IActionResult> GetAllIssuesForEmployee(int employeeId)
+        {
+            try
+            {
+                //todo:
+                return Ok(await _issueService.GetIssueById(employeeId));
             }
             catch (Exception ex)
             {
@@ -42,12 +58,13 @@ namespace IssueTracker.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(IssueModel issueModel)
+        public async Task<IActionResult> Create( IssueModel issueModel)
         {
             try
             {
                 Issue issue = new Issue(issueModel);
-                var issueId = await _issueService.Upsert(issue);
+                var files = await _imageService.Upload(issueModel.files);
+                var issueId = await _issueService.Upsert(issue, files);
                 return CreatedAtRoute("", new { id = issueId });
             }
             catch (Exception ex)
@@ -57,13 +74,15 @@ namespace IssueTracker.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, IssueModel issueModel)
+        public async Task<IActionResult> Update(int id, IssueModel issueModel, List<IFormFile> formFiles)
+        //public async Task<IActionResult> Update(int id, IssueModel issueModel)
         {
             try
             {
                 issueModel.Id = id;
                 Issue issue = new Issue(issueModel);
-                var issueId = await _issueService.Upsert(issue);
+                var files = await _imageService.Upload(formFiles);
+                var issueId = await _issueService.Upsert(issue, files);
                 return Ok();
             }
             catch (Exception ex)

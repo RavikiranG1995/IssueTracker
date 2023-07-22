@@ -1,4 +1,5 @@
 ﻿using IssueTracker.Domain.Constants;
+using IssueTracker.Domain.Entities.IssueImage;
 using IssueTracker.Domain.Entities.Issues;
 using IssueTracker.Domain.Repositories;
 using IssueTracker.Infrastructure.Database.Helpers;
@@ -15,7 +16,7 @@ namespace IssueTracker.Infrastructure.Database.Issue
         {
             _dataBaseProxy = dataBaseProxy;
         }
-        public async Task<int> Upsert(IIssue issue)
+        public async Task<int> Upsert(IIssue issue,List<IImage> files)
         {
             var parameters = new List<SqlParameter>
             {
@@ -28,7 +29,7 @@ namespace IssueTracker.Infrastructure.Database.Issue
                 new SqlParameter("@CreatedBy",issue.CreatedBy),
                 new SqlParameter("@ClosedBy",issue.ClosedBy.HasValue?issue.ClosedBy:DBNull.Value),
                 new SqlParameter("@ClosedOn",issue.ClosedOn.HasValue?issue.ClosedOn:DBNull.Value),
-                new SqlParameter("@ImageJsonData",JsonConvert.SerializeObject(issue.Images))
+                new SqlParameter("@ImageJsonData",JsonConvert.SerializeObject(files))
             };
 
             var returnObject = await _dataBaseProxy.ExecuteScalarAsync("usp_Issues_Upsert", parameters, CancellationToken.None);
