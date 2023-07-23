@@ -1,5 +1,5 @@
 ﻿using IssueTracker.Domain.Constants;
-using IssueTracker.Domain.Entities.IssueImage;
+using IssueTracker.Domain.Entities.IssueFiles;
 
 namespace IssueTracker.Domain.Entities.Issues
 {
@@ -14,6 +14,6 @@ namespace IssueTracker.Domain.Entities.Issues
         public DateTime? ClosedOn { get; set; }
         public DateTime? DeadLine { get; set; }
         public IssueStatus Status { get; set; }
-        public List<IImage> Images { get; set; }
+        public List<IFile> Files { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using IssueTracker.Domain.Entities.Issues;
+﻿using IssueTracker.Domain.Entities.IssueFiles;
+using IssueTracker.Domain.Entities.Issues;
 
 namespace IssueTracker.Domain.Services
 {

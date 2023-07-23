@@ -1,7 +1,6 @@
 ﻿using IssueTracker.Domain.Constants;
-using IssueTracker.Domain.Entities.IssueImage;
+using IssueTracker.Domain.Entities.IssueFiles;
 using IssueTracker.Domain.Models.Issue;
-using System.Text.Json.Serialization;
 
 namespace IssueTracker.Domain.Entities.Issues
 {
@@ -14,13 +13,13 @@ namespace IssueTracker.Domain.Entities.Issues
         public int CreatedBy { get; set; }
         public int? ClosedBy { get; set; }
         public DateTime? ClosedOn { get; set; }
-        public List<IImage> Images { get; set; }
+        public List<IFile> Files { get; set; }
         public DateTime? DeadLine { get; set; }
         public IssueStatus Status { get; set; } = IssueStatus.BackLog;
 
         public Issue()
         {
-            Images = new List<IImage>();
+            Files = new List<IFile>();
         }
         public Issue(IssueModel issueModel)
         {
@@ -32,31 +31,16 @@ namespace IssueTracker.Domain.Entities.Issues
             ClosedBy = issueModel.ClosedBy;
             ClosedOn = issueModel.ClosedOn;
             DeadLine = issueModel.DeadLine;
-            Images = new List<IImage>();
-
-            foreach (var imageModel in issueModel.Images)
-            {
-                var image = new Image();
-                image.ImageGuid = imageModel.ImageGuid;
-                image.ImagePath = imageModel.ImagePath;
-                image.Bas64Image = imageModel.Base64Image;
-                Images.Add(image);
-            }
+            Files = new List<IFile>();
         }
     }
-    public class Image : IImage
+    public class File : IFile
     {
-        public string ImagePath { get; set; }
-        public Guid? ImageGuid { get; set; }
-        [JsonIgnore]
-        public string Bas64Image { get; set; }
-        public Image()
+        public string FilePath { get; set; }
+        public Guid? FileGuid { get; set; }
+        public File()
         {
 
-        }
-        public Image(ImagesModel imagesModel)
-        {
-            Bas64Image = imagesModel.Base64Image;
         }
     }
 }

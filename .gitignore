@@ -396,3 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+IssueTracker.API/IssueFiles
+IssueTracker.API/IssueImages

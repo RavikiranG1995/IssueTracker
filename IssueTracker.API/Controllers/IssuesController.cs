@@ -10,22 +10,11 @@ namespace IssueTracker.API.Controllers
     public class IssueController : ControllerBase
     {
         private readonly IIssueService _issueService;
-        public IssueController(IIssueService issueService)
+        private readonly IFileService _fileService;
+        public IssueController(IIssueService issueService, IFileService fileService)
         {
             _issueService = issueService;
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
-        {
-            try
-            {
-                return Ok(await _issueService.GetIssueById(id));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            _fileService = fileService;
         }
 
         [HttpGet]
@@ -41,12 +30,41 @@ namespace IssueTracker.API.Controllers
             }
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            try
+            {
+                return Ok(await _issueService.GetIssueById(id));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("employee/{employeeId}")]
+        public async Task<IActionResult> GetAllIssuesForEmployee(int employeeId)
+        {
+            try
+            {
+                //todo:
+                return Ok(await _issueService.GetIssueById(employeeId));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpPost]
-        public async Task<IActionResult> Create(IssueModel issueModel)
+        public async Task<IActionResult> Create([FromForm] IssueModel issueModel)
         {
             try
             {
                 Issue issue = new Issue(issueModel);
+                var files = await _fileService.Upload(issueModel.files);
+                issue.Files = files;
                 var issueId = await _issueService.Upsert(issue);
                 return CreatedAtRoute("", new { id = issueId });
             }
@@ -57,12 +75,14 @@ namespace IssueTracker.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, IssueModel issueModel)
+        public async Task<IActionResult> Update(int id, [FromForm]IssueModel issueModel)
         {
             try
             {
                 issueModel.Id = id;
                 Issue issue = new Issue(issueModel);
+                var files = await _fileService.Upload(issueModel.files);
+                issue.Files = files;
                 var issueId = await _issueService.Upsert(issue);
                 return Ok();
             }
