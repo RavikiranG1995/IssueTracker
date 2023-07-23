@@ -27,19 +27,27 @@ namespace IssueTracker.Service.File
         public async Task<List<IFile>> Upload(List<IFormFile> formFiles)
         {
             var issueFiles = new List<IFile>();
-            foreach (var formFile in formFiles)
+            if (formFiles is not null)
             {
-                var file = new Domain.Entities.Issues.File();
-                var fileData = await _inAppStorageService.SaveFile(formFile);
-                file.FilePath = fileData.filePath;
-                file.FileGuid = fileData.fileGuid;
-                issueFiles.Add(file);
+                foreach (var formFile in formFiles)
+                {
+                    var file = new Domain.Entities.Issues.File();
+                    var fileData = await _inAppStorageService.SaveFile(formFile);
+                    file.FilePath = fileData.filePath;
+                    file.FileGuid = fileData.fileGuid;
+                    issueFiles.Add(file);
+                }
             }
             return issueFiles;
         }
 
         public async Task Upload(int issueId, List<IFormFile> formFiles)
         {
+            if (formFiles is not null && !formFiles.Any())
+            {
+                throw new ArgumentNullException($"No Files found to Upload");
+            }
+
             var issue = await _issueRepository.GetIssueById(issueId);
             if (issue is null)
             {
