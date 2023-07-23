@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using IssueTracker.Domain.Constants;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.Text.Json.Serialization;
 
 namespace IssueTracker.Domain.Models.Issue
@@ -14,6 +16,8 @@ namespace IssueTracker.Domain.Models.Issue
         public int? ClosedBy { get; set; }
         public DateTime? ClosedOn { get; set; }
         public DateTime? DeadLine { get; set; }
+        public IssueStatus Status { get; set; }
+        [ValidateNever]
         public List<IFormFile> files { get; set; }
 
     }
