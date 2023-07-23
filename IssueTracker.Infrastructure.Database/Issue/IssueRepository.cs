@@ -16,7 +16,7 @@ namespace IssueTracker.Infrastructure.Database.Issue
         {
             _dataBaseProxy = dataBaseProxy;
         }
-        public async Task<int> Upsert(IIssue issue,List<IImage> files)
+        public async Task<int> Upsert(IIssue issue)
         {
             var parameters = new List<SqlParameter>
             {
@@ -29,7 +29,7 @@ namespace IssueTracker.Infrastructure.Database.Issue
                 new SqlParameter("@CreatedBy",issue.CreatedBy),
                 new SqlParameter("@ClosedBy",issue.ClosedBy.HasValue?issue.ClosedBy:DBNull.Value),
                 new SqlParameter("@ClosedOn",issue.ClosedOn.HasValue?issue.ClosedOn:DBNull.Value),
-                new SqlParameter("@ImageJsonData",JsonConvert.SerializeObject(files))
+                new SqlParameter("@ImageJsonData",JsonConvert.SerializeObject(issue.Files))
             };
 
             var returnObject = await _dataBaseProxy.ExecuteScalarAsync("usp_Issues_Upsert", parameters, CancellationToken.None);
@@ -64,12 +64,12 @@ namespace IssueTracker.Infrastructure.Database.Issue
                 var imageDT = issueDS.Tables[1];
                 foreach (DataRow imageRow in imageDT.Rows)
                 {
-                    var image = new Domain.Entities.Issues.Image
+                    var image = new Domain.Entities.Issues.File
                     {
                         ImagePath = Convert.IsDBNull(imageRow["ImagePath"]) ? null : (string)imageRow["ImagePath"],
                         ImageGuid = Convert.IsDBNull(imageRow["ImageGuid"]) ? null : (Guid)imageRow["ImageGuid"],
                     };
-                    issue.Images.Add(image);
+                    issue.Files.Add(image);
                 }
             }
             return issue;
@@ -98,12 +98,12 @@ namespace IssueTracker.Infrastructure.Database.Issue
                 var issueImages = imageDT.AsEnumerable().Where(x => x.Field<int>("IssueId") == issue.Id).ToArray();
                 foreach (DataRow? imageRow in issueImages)
                 {
-                    var image = new Domain.Entities.Issues.Image
+                    var image = new Domain.Entities.Issues.File
                     {
                         ImagePath = Convert.IsDBNull(imageRow["ImagePath"]) ? null : (string)imageRow["ImagePath"],
                         ImageGuid = Convert.IsDBNull(imageRow["ImageGuid"]) ? null : (Guid)imageRow["ImageGuid"],
                     };
-                    issue.Images.Add(image);
+                    issue.Files.Add(image);
                 }
                 issues.Add(issue);
             }

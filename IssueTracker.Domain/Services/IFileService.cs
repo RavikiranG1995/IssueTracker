@@ -3,11 +3,10 @@ using Microsoft.AspNetCore.Http;
 
 namespace IssueTracker.Domain.Services
 {
-    public interface IImageService
+    public interface IFileService
     {
         Task Delete(Guid imageGuid);
-        Task Save(int issueId, IImage image);
-        Task<List<IImage>> Upload(List<IFormFile> formFiles);
+        Task<List<IFile>> Upload(List<IFormFile> formFiles);
         Task Upload(int issueId, List<IFormFile> formFiles);
     }
 }

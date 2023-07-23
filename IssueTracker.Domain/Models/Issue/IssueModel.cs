@@ -5,6 +5,7 @@ namespace IssueTracker.Domain.Models.Issue
 {
     public class IssueModel
     {
+        [JsonIgnore]
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -13,7 +14,6 @@ namespace IssueTracker.Domain.Models.Issue
         public int? ClosedBy { get; set; }
         public DateTime? ClosedOn { get; set; }
         public DateTime? DeadLine { get; set; }
-        public List<ImagesModel> Images { get; set; }
         public List<IFormFile> files { get; set; }
 
     }

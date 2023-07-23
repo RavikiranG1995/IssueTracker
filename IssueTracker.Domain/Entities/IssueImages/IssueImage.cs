@@ -2,11 +2,9 @@
 
 namespace IssueTracker.Domain.Entities.IssueImage
 {
-    public interface IImage
+    public interface IFile
     {
         public string ImagePath { get; set; }
         public Guid? ImageGuid { get; set; }
-        [JsonIgnore]
-        public string Bas64Image { get; set; }
     }
 }

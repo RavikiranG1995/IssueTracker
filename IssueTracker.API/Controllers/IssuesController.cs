@@ -10,11 +10,24 @@ namespace IssueTracker.API.Controllers
     public class IssueController : ControllerBase
     {
         private readonly IIssueService _issueService;
-        private readonly IImageService _imageService;
-        public IssueController(IIssueService issueService, IImageService imageService)
+        private readonly IFileService _fileService;
+        public IssueController(IIssueService issueService, IFileService fileService)
         {
             _issueService = issueService;
-            _imageService = imageService;
+            _fileService = fileService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                return Ok(await _issueService.GetAllIssues());
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [HttpGet("{id}")]
@@ -44,27 +57,15 @@ namespace IssueTracker.API.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            try
-            {
-                return Ok(await _issueService.GetAllIssues());
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
-        }
-
         [HttpPost]
-        public async Task<IActionResult> Create( IssueModel issueModel)
+        public async Task<IActionResult> Create([FromForm] IssueModel issueModel)
         {
             try
             {
                 Issue issue = new Issue(issueModel);
-                var files = await _imageService.Upload(issueModel.files);
-                var issueId = await _issueService.Upsert(issue, files);
+                var files = await _fileService.Upload(issueModel.files);
+                issue.Files = files;
+                var issueId = await _issueService.Upsert(issue);
                 return CreatedAtRoute("", new { id = issueId });
             }
             catch (Exception ex)
@@ -74,15 +75,15 @@ namespace IssueTracker.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, IssueModel issueModel, List<IFormFile> formFiles)
-        //public async Task<IActionResult> Update(int id, IssueModel issueModel)
+        public async Task<IActionResult> Update(int id, [FromForm]IssueModel issueModel)
         {
             try
             {
                 issueModel.Id = id;
                 Issue issue = new Issue(issueModel);
-                var files = await _imageService.Upload(formFiles);
-                var issueId = await _issueService.Upsert(issue, files);
+                var files = await _fileService.Upload(issueModel.files);
+                issue.Files = files;
+                var issueId = await _issueService.Upsert(issue);
                 return Ok();
             }
             catch (Exception ex)

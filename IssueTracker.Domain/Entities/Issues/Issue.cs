@@ -14,13 +14,13 @@ namespace IssueTracker.Domain.Entities.Issues
         public int CreatedBy { get; set; }
         public int? ClosedBy { get; set; }
         public DateTime? ClosedOn { get; set; }
-        public List<IImage> Images { get; set; }
+        public List<IFile> Files { get; set; }
         public DateTime? DeadLine { get; set; }
         public IssueStatus Status { get; set; } = IssueStatus.BackLog;
 
         public Issue()
         {
-            Images = new List<IImage>();
+            Files = new List<IFile>();
         }
         public Issue(IssueModel issueModel)
         {
@@ -32,31 +32,29 @@ namespace IssueTracker.Domain.Entities.Issues
             ClosedBy = issueModel.ClosedBy;
             ClosedOn = issueModel.ClosedOn;
             DeadLine = issueModel.DeadLine;
-            Images = new List<IImage>();
+            Files = new List<IFile>();
 
-            foreach (var imageModel in issueModel.Images)
-            {
-                var image = new Image();
-                image.ImageGuid = imageModel.ImageGuid;
-                image.ImagePath = imageModel.ImagePath;
-                image.Bas64Image = imageModel.Base64Image;
-                Images.Add(image);
-            }
+            //foreach (var imageModel in issueModel.Images)
+            //{
+            //    var image = new Image();
+            //    image.ImageGuid = imageModel.ImageGuid;
+            //    image.ImagePath = imageModel.ImagePath;
+            //    image.Bas64Image = imageModel.Base64Image;
+            //    Images.Add(image);
+            //}
         }
     }
-    public class Image : IImage
+    public class File : IFile
     {
         public string ImagePath { get; set; }
         public Guid? ImageGuid { get; set; }
-        [JsonIgnore]
-        public string Bas64Image { get; set; }
-        public Image()
+        public File()
         {
 
         }
-        public Image(ImagesModel imagesModel)
+        public File(ImagesModel imagesModel)
         {
-            Bas64Image = imagesModel.Base64Image;
+            //Bas64Image = imagesModel.Base64Image;
         }
     }
 }

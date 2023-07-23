@@ -14,6 +14,6 @@ namespace IssueTracker.Domain.Entities.Issues
         public DateTime? ClosedOn { get; set; }
         public DateTime? DeadLine { get; set; }
         public IssueStatus Status { get; set; }
-        public List<IImage> Images { get; set; }
+        public List<IFile> Files { get; set; }
     }
 }

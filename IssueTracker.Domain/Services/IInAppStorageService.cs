@@ -6,6 +6,6 @@ namespace IssueTracker.Domain.Services
     {
         Task<(string imagePath, Guid imageGuid)> SaveFile(byte[] content, string extension, string containerName);
         Task DeleteFile(string fileRoute, string containerName);
-        Task<(string imagePath, string fileName)> Upload(IFormFile formFile);
+        Task<(string imagePath, Guid fileGuid)> Upload(IFormFile formFile);
     }
 }

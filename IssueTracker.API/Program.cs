@@ -8,6 +8,7 @@ using IssueTracker.Service.Employee;
 using IssueTracker.Service.Image;
 using IssueTracker.Service.Issues;
 using IssueTracker.Service.StorageService;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<IInAppStorageService, InAppStorageService>();
 builder.Services.AddScoped<IIssueService, IssueService>();
-builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 builder.Services.AddScoped<IIssueRepository, IssueRepository>();
@@ -41,6 +42,12 @@ if (app.Environment.IsDevelopment())
 }
 
 //app.UseHttpsRedirection();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "IssueFiles")),
+    RequestPath = "/IssueFiles"
+});
 
 app.UseAuthorization();
 

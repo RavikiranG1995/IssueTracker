@@ -17,17 +17,9 @@ namespace IssueTracker.Service.Issues
             _issueRepository = issueRepository;
             _imageRepository = imageRepository;
         }
-        public async Task<int> Upsert(IIssue issue,List<IImage> files)
+        public async Task<int> Upsert(IIssue issue)
         {
-            foreach (var image in issue.Images)
-            {
-                //todo:Upload images using IFormFile instead of base 64
-                var imageBytes = Convert.FromBase64String(image.Bas64Image);
-                var imageData = await _inAppStorageService.SaveFile(imageBytes, ".jpg", containerName);
-                image.ImagePath = imageData.imagePath;
-                image.ImageGuid = imageData.imageGuid;
-            }
-            return await _issueRepository.Upsert(issue, files);
+            return await _issueRepository.Upsert(issue);
         }
 
         public async Task<IIssue> GetIssueById(int id)
@@ -42,7 +34,7 @@ namespace IssueTracker.Service.Issues
 
         public async Task DeleteIssue(int id)
         {
-            var imaggesToRemove = await _imageRepository.GetAllIssueImages(id);
+            var imaggesToRemove = await _imageRepository.GetAllIssueFiles(id);
             foreach (var image in imaggesToRemove)
             {
                 await _inAppStorageService.DeleteFile(image.ImageGuid.ToString(), containerName);
