@@ -9,7 +9,7 @@ namespace IssueTracker.Service.Issues
         private readonly IInAppStorageService _inAppStorageService;
         private readonly IIssueRepository _issueRepository;
         private readonly IFileRepository _fileRepository;
-        private string containerName = "IssueImages";
+        private string containerName = "IssueFiles";
         public IssueService(IInAppStorageService inAppStorageService, IIssueRepository issueRepository, IFileRepository fileRepository)
         {
             _inAppStorageService = inAppStorageService;

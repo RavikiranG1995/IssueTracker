@@ -66,7 +66,7 @@ namespace IssueTracker.Infrastructure.Database.Issue
                 {
                     var file = new Domain.Entities.Issues.File
                     {
-                        FilePath = Convert.IsDBNull(fileRow["ImagePath"]) ? null : (string)fileRow["ImagePath"],
+                        FilePath = Convert.IsDBNull(fileRow["ImagePath"]) ? null : fileRow["ImagePath"].ToString().Replace("\\", "/"),
                         FileGuid = Convert.IsDBNull(fileRow["ImageGuid"]) ? null : (Guid)fileRow["ImageGuid"],
                     };
                     issue.Files.Add(file);
@@ -98,9 +98,10 @@ namespace IssueTracker.Infrastructure.Database.Issue
                 var issueFiles = fileDT.AsEnumerable().Where(x => x.Field<int>("IssueId") == issue.Id).ToArray();
                 foreach (DataRow? fileRow in issueFiles)
                 {
+                    var path = Path.GetFullPath((string)fileRow["ImagePath"]);
                     var file = new Domain.Entities.Issues.File
                     {
-                        FilePath = Convert.IsDBNull(fileRow["ImagePath"]) ? null : (string)fileRow["ImagePath"],
+                        FilePath = Convert.IsDBNull(fileRow["ImagePath"]) ? null : fileRow["ImagePath"].ToString().Replace("\\","/"),
                         FileGuid = Convert.IsDBNull(fileRow["ImageGuid"]) ? null : (Guid)fileRow["ImageGuid"],
                     };
                     issue.Files.Add(file);

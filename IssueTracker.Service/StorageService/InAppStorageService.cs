@@ -41,7 +41,7 @@ namespace IssueTracker.Service.StorageService
                 Directory.CreateDirectory(folder);
             }
             var currentUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
-            var pathForDb = Path.Combine(currentUrl, "IssueFiles/", fileName);
+            var pathForDb = Path.Combine(currentUrl, "IssueFiles", fileName);
             //var pathForDb = Path.Combine(_env.ContentRootPath, "IssueFiles/", fileName);
             string savingPath = Path.Combine(folder, fileName);
             using FileStream stream = new FileStream(savingPath, FileMode.Create);
