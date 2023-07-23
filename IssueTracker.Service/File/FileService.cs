@@ -30,7 +30,7 @@ namespace IssueTracker.Service.File
             foreach (var formFile in formFiles)
             {
                 var file = new Domain.Entities.Issues.File();
-                var fileData = await _inAppStorageService.Upload(formFile);
+                var fileData = await _inAppStorageService.SaveFile(formFile);
                 file.FilePath = fileData.filePath;
                 file.FileGuid = fileData.fileGuid;
                 issueFiles.Add(file);

@@ -15,23 +15,6 @@ namespace IssueTracker.Service.StorageService
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<(string imagePath, Guid imageGuid)> SaveFile(byte[] content, string extension, string containerName)
-        {
-            var imageGuid = Guid.NewGuid();
-            var fileName = $"{imageGuid}{extension}";
-            string folder = Path.Combine(_env.ContentRootPath, containerName);
-            if (!Directory.Exists(folder))
-            {
-                Directory.CreateDirectory(folder);
-            }
-            string savingPath = Path.Combine(folder, fileName);
-            await System.IO.File.WriteAllBytesAsync(savingPath, content);
-
-            var currentUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
-            var pathForDb = Path.Combine(currentUrl, containerName, fileName);
-            return (pathForDb, imageGuid);
-        }
-
         public Task DeleteFile(string fileRoute, string containerName)
         {
             var fileName = Path.GetFileName(fileRoute);
@@ -45,7 +28,7 @@ namespace IssueTracker.Service.StorageService
             return Task.FromResult(0);
         }
 
-        public async Task<(string filePath, Guid fileGuid)> Upload(IFormFile formFile)
+        public async Task<(string filePath, Guid fileGuid)> SaveFile(IFormFile formFile)
         {
             var extension = Path.GetExtension(formFile.FileName);
             //var fileName = $"{Guid.NewGuid().ToString()}{extension}";
