@@ -17,13 +17,4 @@ namespace IssueTracker.Domain.Models.Issue
         public List<IFormFile> files { get; set; }
 
     }
-    public class ImagesModel
-    {
-        [JsonIgnore]
-        public string ImagePath { get; set; } = string.Empty;
-        [JsonIgnore]
-        public Guid? ImageGuid { get; set; }
-        public string Base64Image { get; set; }
-        public List<IFormFile> files { get; set; }
-    }
 }

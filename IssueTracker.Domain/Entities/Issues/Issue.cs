@@ -32,15 +32,6 @@ namespace IssueTracker.Domain.Entities.Issues
             ClosedOn = issueModel.ClosedOn;
             DeadLine = issueModel.DeadLine;
             Files = new List<IFile>();
-
-            //foreach (var imageModel in issueModel.Images)
-            //{
-            //    var image = new Image();
-            //    image.ImageGuid = imageModel.ImageGuid;
-            //    image.ImagePath = imageModel.ImagePath;
-            //    image.Bas64Image = imageModel.Base64Image;
-            //    Images.Add(image);
-            //}
         }
     }
     public class File : IFile
@@ -50,10 +41,6 @@ namespace IssueTracker.Domain.Entities.Issues
         public File()
         {
 
-        }
-        public File(ImagesModel imagesModel)
-        {
-            //Bas64Image = imagesModel.Base64Image;
         }
     }
 }
