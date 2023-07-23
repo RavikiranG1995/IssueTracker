@@ -1,5 +1,4 @@
-﻿using IssueTracker.Domain.Entities.IssueImage;
-using IssueTracker.Domain.Entities.Issues;
+﻿using IssueTracker.Domain.Entities.Issues;
 using IssueTracker.Domain.Repositories;
 using IssueTracker.Domain.Services;
 
@@ -9,13 +8,13 @@ namespace IssueTracker.Service.Issues
     {
         private readonly IInAppStorageService _inAppStorageService;
         private readonly IIssueRepository _issueRepository;
-        private readonly IImageRepository _imageRepository;
+        private readonly IFileRepository _fileRepository;
         private string containerName = "IssueImages";
-        public IssueService(IInAppStorageService inAppStorageService, IIssueRepository issueRepository, IImageRepository imageRepository)
+        public IssueService(IInAppStorageService inAppStorageService, IIssueRepository issueRepository, IFileRepository fileRepository)
         {
             _inAppStorageService = inAppStorageService;
             _issueRepository = issueRepository;
-            _imageRepository = imageRepository;
+            _fileRepository = fileRepository;
         }
         public async Task<int> Upsert(IIssue issue)
         {
@@ -34,10 +33,10 @@ namespace IssueTracker.Service.Issues
 
         public async Task DeleteIssue(int id)
         {
-            var imaggesToRemove = await _imageRepository.GetAllIssueFiles(id);
-            foreach (var image in imaggesToRemove)
+            var filesToRemove = await _fileRepository.GetAllIssueFiles(id);
+            foreach (var file in filesToRemove)
             {
-                await _inAppStorageService.DeleteFile(image.ImageGuid.ToString(), containerName);
+                await _inAppStorageService.DeleteFile(file.FileGuid.ToString(), containerName);
             }
             await _issueRepository.DeleteIssue(id);
         }

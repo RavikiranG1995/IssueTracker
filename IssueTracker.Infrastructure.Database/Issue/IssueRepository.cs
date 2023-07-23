@@ -1,5 +1,5 @@
 ﻿using IssueTracker.Domain.Constants;
-using IssueTracker.Domain.Entities.IssueImage;
+using IssueTracker.Domain.Entities.IssueFiles;
 using IssueTracker.Domain.Entities.Issues;
 using IssueTracker.Domain.Repositories;
 using IssueTracker.Infrastructure.Database.Helpers;
@@ -61,15 +61,15 @@ namespace IssueTracker.Infrastructure.Database.Issue
                     Status = (IssueStatus)row["IssueStatus"]
                 };
 
-                var imageDT = issueDS.Tables[1];
-                foreach (DataRow imageRow in imageDT.Rows)
+                var fileDT = issueDS.Tables[1];
+                foreach (DataRow fileRow in fileDT.Rows)
                 {
-                    var image = new Domain.Entities.Issues.File
+                    var file = new Domain.Entities.Issues.File
                     {
-                        ImagePath = Convert.IsDBNull(imageRow["ImagePath"]) ? null : (string)imageRow["ImagePath"],
-                        ImageGuid = Convert.IsDBNull(imageRow["ImageGuid"]) ? null : (Guid)imageRow["ImageGuid"],
+                        FilePath = Convert.IsDBNull(fileRow["ImagePath"]) ? null : (string)fileRow["ImagePath"],
+                        FileGuid = Convert.IsDBNull(fileRow["ImageGuid"]) ? null : (Guid)fileRow["ImageGuid"],
                     };
-                    issue.Files.Add(image);
+                    issue.Files.Add(file);
                 }
             }
             return issue;
@@ -79,7 +79,7 @@ namespace IssueTracker.Infrastructure.Database.Issue
         {
             using var issueDS = await _dataBaseProxy.GetDataSetAsync("usp_GetAllIssues", null, CancellationToken.None);
             var issueDT = issueDS.Tables[0];
-            var imageDT = issueDS.Tables[1];
+            var fileDT = issueDS.Tables[1];
             var issues = new List<Domain.Entities.Issues.Issue>();
             foreach (DataRow row in issueDT.Rows)
             {
@@ -95,15 +95,15 @@ namespace IssueTracker.Infrastructure.Database.Issue
                     CreatedBy = (int)row["CreatedBy"],
                     Status = (IssueStatus)row["IssueStatus"]
                 };
-                var issueImages = imageDT.AsEnumerable().Where(x => x.Field<int>("IssueId") == issue.Id).ToArray();
-                foreach (DataRow? imageRow in issueImages)
+                var issueFiles = fileDT.AsEnumerable().Where(x => x.Field<int>("IssueId") == issue.Id).ToArray();
+                foreach (DataRow? fileRow in issueFiles)
                 {
-                    var image = new Domain.Entities.Issues.File
+                    var file = new Domain.Entities.Issues.File
                     {
-                        ImagePath = Convert.IsDBNull(imageRow["ImagePath"]) ? null : (string)imageRow["ImagePath"],
-                        ImageGuid = Convert.IsDBNull(imageRow["ImageGuid"]) ? null : (Guid)imageRow["ImageGuid"],
+                        FilePath = Convert.IsDBNull(fileRow["ImagePath"]) ? null : (string)fileRow["ImagePath"],
+                        FileGuid = Convert.IsDBNull(fileRow["ImageGuid"]) ? null : (Guid)fileRow["ImageGuid"],
                     };
-                    issue.Files.Add(image);
+                    issue.Files.Add(file);
                 }
                 issues.Add(issue);
             }

@@ -25,7 +25,7 @@ namespace IssueTracker.Service.StorageService
                 Directory.CreateDirectory(folder);
             }
             string savingPath = Path.Combine(folder, fileName);
-            await File.WriteAllBytesAsync(savingPath, content);
+            await System.IO.File.WriteAllBytesAsync(savingPath, content);
 
             var currentUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}";
             var pathForDb = Path.Combine(currentUrl, containerName, fileName);
@@ -40,12 +40,12 @@ namespace IssueTracker.Service.StorageService
             var file = Directory.GetFiles(fileDirectory, fileName).FirstOrDefault();
             if (!string.IsNullOrEmpty(file))
             {
-                File.Delete(file);
+                System.IO.File.Delete(file);
             }
             return Task.FromResult(0);
         }
 
-        public async Task<(string imagePath, Guid fileGuid)> Upload(IFormFile formFile)
+        public async Task<(string filePath, Guid fileGuid)> Upload(IFormFile formFile)
         {
             var extension = Path.GetExtension(formFile.FileName);
             //var fileName = $"{Guid.NewGuid().ToString()}{extension}";

@@ -1,5 +1,5 @@
 ﻿using IssueTracker.Domain.Constants;
-using IssueTracker.Domain.Entities.IssueImage;
+using IssueTracker.Domain.Entities.IssueFiles;
 
 namespace IssueTracker.Domain.Entities.Issues
 {

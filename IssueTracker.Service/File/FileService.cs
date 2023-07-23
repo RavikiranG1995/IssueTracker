@@ -1,19 +1,19 @@
-﻿using IssueTracker.Domain.Entities.IssueImage;
+﻿using IssueTracker.Domain.Entities.IssueFiles;
 using IssueTracker.Domain.Repositories;
 using IssueTracker.Domain.Services;
 using Microsoft.AspNetCore.Http;
 
-namespace IssueTracker.Service.Image
+namespace IssueTracker.Service.File
 {
     public class FileService : IFileService
     {
-        private readonly IImageRepository _imageRepository;
+        private readonly IFileRepository _fileRepository;
         private readonly IIssueRepository _issueRepository;
         private readonly IInAppStorageService _inAppStorageService;
         private string containerName = "IssueFiles";
-        public FileService(IImageRepository imageRepository, IInAppStorageService inAppStorageService, IIssueRepository issueRepository)
+        public FileService(IFileRepository fileRepository, IInAppStorageService inAppStorageService, IIssueRepository issueRepository)
         {
-            _imageRepository = imageRepository;
+            _fileRepository = fileRepository;
             _inAppStorageService = inAppStorageService;
             _issueRepository = issueRepository;
         }
@@ -21,7 +21,7 @@ namespace IssueTracker.Service.Image
         public async Task Delete(Guid fileGuid)
         {
             await _inAppStorageService.DeleteFile(fileGuid.ToString(), containerName);
-            await _imageRepository.Delete(fileGuid);
+            await _fileRepository.Delete(fileGuid);
         }
 
         public async Task<List<IFile>> Upload(List<IFormFile> formFiles)
@@ -31,8 +31,8 @@ namespace IssueTracker.Service.Image
             {
                 var file = new Domain.Entities.Issues.File();
                 var fileData = await _inAppStorageService.Upload(formFile);
-                file.ImagePath = fileData.imagePath;
-                file.ImageGuid = fileData.fileGuid;
+                file.FilePath = fileData.filePath;
+                file.FileGuid = fileData.fileGuid;
                 issueFiles.Add(file);
             }
             return issueFiles;
@@ -48,7 +48,7 @@ namespace IssueTracker.Service.Image
             var files = await Upload(formFiles);
             foreach (var file in files)
             {
-                await _imageRepository.SaveImage(issueId, file);
+                await _fileRepository.SaveFile(issueId, file);
             }
         }
     }

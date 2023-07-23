@@ -1,4 +1,4 @@
-﻿using IssueTracker.Domain.Entities.IssueImage;
+﻿using IssueTracker.Domain.Entities.IssueFiles;
 using IssueTracker.Domain.Entities.Issues;
 
 namespace IssueTracker.Domain.Repositories

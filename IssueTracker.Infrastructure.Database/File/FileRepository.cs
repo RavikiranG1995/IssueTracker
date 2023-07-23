@@ -1,15 +1,15 @@
-﻿using IssueTracker.Domain.Entities.IssueImage;
+﻿using IssueTracker.Domain.Entities.IssueFiles;
 using IssueTracker.Domain.Repositories;
 using IssueTracker.Infrastructure.Database.Helpers;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
-namespace IssueTracker.Infrastructure.Database.Image
+namespace IssueTracker.Infrastructure.Database.File
 {
-    public class ImageRepository : IImageRepository
+    public class FileRepository : IFileRepository
     {
         private readonly IDataBaseWrapper _dataBaseProxy;
-        public ImageRepository(IDataBaseWrapper dataBaseProxy)
+        public FileRepository(IDataBaseWrapper dataBaseProxy)
         {
             _dataBaseProxy = dataBaseProxy;
         }
@@ -31,25 +31,25 @@ namespace IssueTracker.Infrastructure.Database.Image
             using var issueDS = await _dataBaseProxy.GetDataSetAsync("usp_GetIssueImagesBy_IssueId", parameters, CancellationToken.None);
             var filesDT = issueDS.Tables[0];
             var issueFiles = new List<IFile>();
-            foreach (DataRow imageRow in filesDT.Rows)
+            foreach (DataRow fileRow in filesDT.Rows)
             {
-                var issueImage = new Domain.Entities.Issues.File
+                var issueFile = new Domain.Entities.Issues.File
                 {
-                    ImagePath = Convert.IsDBNull(imageRow["ImagePath"]) ? null : (string)imageRow["ImagePath"],
-                    ImageGuid = Convert.IsDBNull(imageRow["ImageGuid"]) ? null : (Guid)imageRow["ImageGuid"],
+                    FilePath = Convert.IsDBNull(fileRow["ImagePath"]) ? null : (string)fileRow["ImagePath"],
+                    FileGuid = Convert.IsDBNull(fileRow["ImageGuid"]) ? null : (Guid)fileRow["ImageGuid"],
                 };
-                issueFiles.Add(issueImage);
+                issueFiles.Add(issueFile);
             }
             return issueFiles;
         }
 
-        public async Task SaveImage(int issueId, IFile file)
+        public async Task SaveFile(int issueId, IFile file)
         {
             var parameters = new List<SqlParameter>
             {
                 new SqlParameter("@IssueId",issueId),
-                new SqlParameter("@ImageGuid",file.ImageGuid),
-                new SqlParameter("@ImagePath",file.ImagePath),
+                new SqlParameter("@ImageGuid",file.FileGuid),
+                new SqlParameter("@ImagePath",file.FilePath),
             };
             var returnObject = await _dataBaseProxy.ExecuteScalarAsync("usp_Image_Save", parameters, CancellationToken.None);
         }

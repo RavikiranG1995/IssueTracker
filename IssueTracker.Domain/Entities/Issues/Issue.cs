@@ -1,7 +1,6 @@
 ﻿using IssueTracker.Domain.Constants;
-using IssueTracker.Domain.Entities.IssueImage;
+using IssueTracker.Domain.Entities.IssueFiles;
 using IssueTracker.Domain.Models.Issue;
-using System.Text.Json.Serialization;
 
 namespace IssueTracker.Domain.Entities.Issues
 {
@@ -46,8 +45,8 @@ namespace IssueTracker.Domain.Entities.Issues
     }
     public class File : IFile
     {
-        public string ImagePath { get; set; }
-        public Guid? ImageGuid { get; set; }
+        public string FilePath { get; set; }
+        public Guid? FileGuid { get; set; }
         public File()
         {
 
