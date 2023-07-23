@@ -30,7 +30,7 @@ namespace UnitTesting.Services
         }
 
         [Test]
-        public async Task UploadFile_Throws_NullReferenceException_If_IssueIdIs_Invalid123()
+        public async Task UploadFile_Should_Save_AllFilesToDirectory()
         {
             _mockInAppStorageService = new Mock<IInAppStorageService>();
             _mockfileRepository = new Mock<IFileRepository>();
